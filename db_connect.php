@@ -1,8 +1,8 @@
 <?php
-$servername = "sql209.infinityfree.com";
-$username = "if0_41099273";
-$password = "MUwsGL5tofUrqdY";
-$dbname = "if0_41099273_library_system";
+$servername = "localhost";  
+$username   = "root";       
+$password   = "";             
+$dbname     = "library_system";
 
 // إنشاء الاتصال
 $conn = new mysqli($servername, $username, $password, $dbname);
