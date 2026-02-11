@@ -1,0 +1,19 @@
+# إعدادات الأمان والأداء لـ InfinityFree
+
+# تعطيل عرض الأخطاء
+php_flag display_errors off
+
+# حماية ملف قاعدة البيانات
+<FilesMatch "db_connect\.php">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# منع عرض قائمة الملفات
+Options -Indexes
+
+# إعدادات الأمان
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
