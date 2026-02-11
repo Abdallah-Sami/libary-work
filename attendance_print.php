@@ -29,19 +29,29 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             direction: rtl;
             text-align: right;
             margin: 15px;
-            background: white;
+            background: #f3f7ff;
         }
         
         .container {
             max-width: 210mm;
             margin: 0 auto;
             padding: 8mm;
+            background: #fff;
+            border: 2px solid #d7e5ff;
+            border-radius: 10px;
         }
         
         .header {
             text-align: center;
             margin-bottom: 15px;
             line-height: 1.6;
+            color: #0b2d84;
+        }
+
+        .print-logo {
+            width: 105px;
+            height: auto;
+            margin-bottom: 8px;
         }
         
         .header h3 {
@@ -58,7 +68,7 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         .info-section {
             margin: 15px 0;
             padding: 8px;
-            background: #f8f9fa;
+            background: #f3f7ff;
             border-radius: 5px;
         }
         
@@ -76,15 +86,16 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         }
         
         th {
-            background: #e9ecef;
+            background: #e3ecff;
             font-weight: bold;
         }
         
         .signature-section {
             margin-top: 20px;
             padding: 12px;
-            border: 1px solid #dee2e6;
+            border: 1px solid #d7e5ff;
             border-radius: 5px;
+            background: #f9fbff;
         }
         
         .signature-line {
@@ -98,6 +109,7 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             body {
                 margin: 0;
                 padding: 0;
+                background: white;
             }
             
             .no-print {
@@ -118,6 +130,7 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
                 page-break-inside: avoid !important;
                 transform: scale(0.95); /* Scale down slightly to ensure fit */
                 transform-origin: top center;
+                border: none;
             }
             
             table {
@@ -187,7 +200,7 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         }
         
         .print-btn {
-            background: #28a745;
+            background: #1f4bd8;
             color: white;
             padding: 12px 24px;
             border: none;
@@ -198,11 +211,11 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         }
         
         .print-btn:hover {
-            background: #218838;
+            background: #163fb8;
         }
         
         .close-btn {
-            background: #6c757d;
+            background: #0b2d84;
             color: white;
             padding: 12px 24px;
             border: none;
@@ -222,6 +235,7 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
 
 <div class="container">
     <div class="header">
+        <img src="college.png" alt="شعار الهيئة الملكية" class="print-logo">
         <h3>الهيئة الملكية بينبع</h3>
         <h3>الإدارة العامة للتعليم بالهيئة الملكية بينبع</h3>
         <h3>وكالة الكليات لشؤون الطلاب</h3>

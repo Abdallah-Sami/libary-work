@@ -15,12 +15,15 @@ $username = getUser();
 
 <div class="container">
     <header class="main-header no-print">
-        <div>
-            <h1>📚 Library</h1>
-            <p style="font-size: 14px; opacity: 0.9;">Yanbu Industrial College - Main Library</p>
-            <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">
-                👤 مرحباً: <?= htmlspecialchars($username) ?>
-            </p>
+        <div class="brand-wrap">
+            <img src="college.png" alt="شعار الهيئة الملكية" class="site-logo">
+            <div>
+                <h1>📚 Library</h1>
+                <p class="brand-subtitle">Yanbu Industrial College - Main Library</p>
+                <p class="brand-user">
+                    👤 مرحباً: <?= htmlspecialchars($username) ?>
+                </p>
+            </div>
         </div>
         <nav class="main-nav">
             <a href="index.php" class="nav-btn">🏠 Home</a>
