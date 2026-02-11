@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1f4bd8 0%, #0b2d84 70%, #43b3e8 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -48,15 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 400px;
+            max-width: 430px;
             text-align: center;
         }
         .logo {
-            font-size: 64px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+        .logo img {
+            width: 140px;
+            height: auto;
+            object-fit: contain;
         }
         h1 {
-            color: #667eea;
+            color: #0b2d84;
             font-size: 28px;
             margin-bottom: 10px;
         }
@@ -88,13 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            border-color: #0b2d84;
+            box-shadow: 0 0 0 3px rgba(31,75,216,0.12);
         }
         .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1f4bd8 0%, #0b2d84 70%, #43b3e8 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -106,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+            box-shadow: 0 10px 25px rgba(11,45,132,0.35);
         }
         .error {
             background: #fee;
@@ -131,14 +135,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transform: translateY(-50%);
             cursor: pointer;
             font-size: 18px;
-            color: #667eea;
+            color: #0b2d84;
             user-select: none;
         }
     </style>
 </head>
 <body>
     <div class="login-box">
-        <div class="logo">📚</div>
+        <div class="logo"><img src="college.png" alt="شعار الهيئة الملكية"></div>
         <h1>نظام المكتبة</h1>
         <p class="subtitle">كلية ينبع الصناعية - المكتبة الرئيسية</p>
         

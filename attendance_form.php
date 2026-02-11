@@ -30,19 +30,19 @@ $students = $conn->query("SELECT id, full_name, academic_id FROM student_workers
             </select>
         </div>
 
-        <div style="padding: 15px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
-            <h4 style="margin-bottom: 15px; color: #667eea;">📋 بيانات الطالب المختار:</h4>
+        <div style="padding: 15px; background: #f3f7ff; border-radius: 8px; margin: 20px 0;">
+            <h4 style="margin-bottom: 15px; color: #1f4bd8;">📋 بيانات الطالب المختار:</h4>
             
             <div class="form-group">
                 <label for="student_name">👤 اسم الطالب:</label>
                 <input type="text" id="student_name" name="student_name" class="form-control" 
-                       placeholder="سيتم التعبئة تلقائياً" readonly required style="background: #e9ecef;">
+                       placeholder="سيتم التعبئة تلقائياً" readonly required style="background: #e3ecff;">
             </div>
 
             <div class="form-group">
                 <label for="student_id">🔢 الرقم الأكاديمي:</label>
                 <input type="text" id="student_id" name="student_id" class="form-control" 
-                       placeholder="سيتم التعبئة تلقائياً" readonly required style="background: #e9ecef;">
+                       placeholder="سيتم التعبئة تلقائياً" readonly required style="background: #e3ecff;">
             </div>
         </div>
 
