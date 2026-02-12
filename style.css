@@ -20,7 +20,11 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1b2d6b 0%, #2a1a54 50%, #1b2d6b 100%);
+    background: #0f1b3e;
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(123, 77, 186, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(91, 197, 232, 0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(46, 189, 112, 0.15) 0%, transparent 50%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -29,15 +33,32 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 20px;
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2ebd70, #5bc5e8, #7b4dba);
+    z-index: 10;
 }
 
 /* Header Navigation */
 .main-header {
-    background: linear-gradient(135deg, #1b2d6b 0%, #7b4dba 100%);
+    background: #0f1b3e;
+    background-image:
+        radial-gradient(ellipse at 0% 50%, rgba(123, 77, 186, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 50%, rgba(91, 197, 232, 0.2) 0%, transparent 50%);
     padding: 20px 30px;
     color: white;
     display: flex;
@@ -86,19 +107,20 @@ body {
 }
 
 .nav-btn {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
     color: white;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
     font-size: 14px;
     transition: all 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .nav-btn.active {
@@ -117,17 +139,30 @@ body {
     font-size: 28px;
     margin-bottom: 20px;
     text-align: center;
-    border-bottom: 3px solid var(--brand-cyan);
-    padding-bottom: 10px;
+    padding-bottom: 12px;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background: linear-gradient(90deg, #2ebd70, #5bc5e8, #7b4dba);
+    border-radius: 2px;
 }
 
 /* Forms */
 .form-container {
     background: var(--surface-soft);
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 14px;
     max-width: 600px;
     margin: 0 auto;
+    border: 1px solid #e2e8f4;
 }
 
 .form-group {
@@ -144,15 +179,19 @@ body {
 .form-control {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
+    border: 2px solid #e2e8f4;
+    border-radius: 10px;
     font-size: 14px;
-    transition: border-color 0.3s;
+    transition: all 0.3s ease;
+    background: #f8faff;
+    color: var(--brand-navy);
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--brand-purple);
+    box-shadow: 0 0 0 4px rgba(123, 77, 186, 0.12);
+    background: #fff;
 }
 
 /* Buttons */
@@ -170,14 +209,13 @@ body {
 }
 
 .btn-primary {
-    background: var(--brand-navy);
+    background: linear-gradient(135deg, #1b2d6b 0%, #7b4dba 100%);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #142354;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(27, 45, 107, 0.35);
+    box-shadow: 0 8px 25px rgba(123, 77, 186, 0.35);
 }
 
 .btn-secondary {
@@ -240,7 +278,7 @@ th, td {
 }
 
 th {
-    background: var(--brand-navy);
+    background: linear-gradient(135deg, #1b2d6b 0%, #7b4dba 100%);
     color: white;
     font-weight: 600;
 }
@@ -281,12 +319,24 @@ tr:hover {
 
 .home-card {
     padding: 40px 20px;
-    border-radius: 15px;
+    border-radius: 18px;
     text-align: center;
     color: white;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
 }
 
 .home-card:nth-child(7n+1) {
@@ -313,7 +363,7 @@ tr:hover {
 
 .home-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
 .home-card h3 {
@@ -512,7 +562,7 @@ tr:hover {
 /* Alert Messages */
 .alert {
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 12px;
     margin: 20px 0;
 }
 
