@@ -29,9 +29,9 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             direction: rtl;
             text-align: right;
             margin: 15px;
-            background: #f3f7ff;
+            background: #f4f6fb;
         }
-        
+
         .container {
             max-width: 210mm;
             margin: 0 auto;
@@ -40,167 +40,185 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             border: 2px solid #d7e5ff;
             border-radius: 10px;
         }
-        
+
         .header {
+            position: relative;
             text-align: center;
-            margin-bottom: 15px;
-            line-height: 1.6;
-            color: #0b2d84;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #1b2d6b;
+            min-height: 80px;
         }
 
         .print-logo {
-            width: 105px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 85px;
             height: auto;
-            margin-bottom: 8px;
         }
-        
+
         .header h3 {
-            margin: 3px 0;
-            font-size: 15px;
+            margin: 2px 0;
+            font-size: 13px;
         }
-        
+
         .header h2 {
-            margin: 8px 0;
-            font-size: 17px;
+            margin: 6px 0;
+            font-size: 15px;
             font-weight: bold;
         }
-        
+
         .info-section {
-            margin: 15px 0;
-            padding: 8px;
-            background: #f3f7ff;
+            margin: 10px 0;
+            padding: 6px 8px;
+            background: #f4f6fb;
             border-radius: 5px;
+            font-size: 13px;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 8px 0;
         }
-        
+
         th, td {
             border: 1.5px solid #000;
-            padding: 6px;
+            padding: 4px 3px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
         }
-        
+
         th {
             background: #e3ecff;
             font-weight: bold;
+            font-size: 11px;
         }
-        
+
+        .total-section {
+            margin: 8px 0;
+            padding: 6px 8px;
+            background: #fff3cd;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
         .signature-section {
-            margin-top: 20px;
-            padding: 12px;
+            margin-top: 10px;
+            padding: 8px;
             border: 1px solid #d7e5ff;
             border-radius: 5px;
             background: #f9fbff;
+            font-size: 12px;
         }
-        
+
+        .signature-section h4 {
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
         .signature-line {
             border-bottom: 1px solid #000;
             display: inline-block;
-            min-width: 200px;
+            min-width: 180px;
             margin: 0 10px;
         }
-        
+
+        .signature-section div {
+            margin: 6px 0;
+        }
+
         @media print {
             body {
                 margin: 0;
                 padding: 0;
                 background: white;
             }
-            
+
             .no-print {
                 display: none !important;
             }
-            
+
             @page {
                 size: A4;
-                margin: 8mm;
+                margin: 6mm;
             }
-            
-            /* Force entire content to fit on one page */
+
             html, body {
                 height: 100%;
             }
-            
+
             .container {
                 page-break-inside: avoid !important;
-                transform: scale(0.95); /* Scale down slightly to ensure fit */
-                transform-origin: top center;
                 border: none;
+                padding: 4mm;
+                max-width: 100%;
             }
-            
-            table {
-                page-break-inside: avoid !important;
-                page-break-before: auto;
-                page-break-after: auto;
-            }
-            
-            thead {
-                display: table-header-group;
-            }
-            
-            tbody {
-                page-break-inside: avoid !important;
-            }
-            
-            tr {
-                page-break-inside: avoid !important;
-            }
-            
-            /* Reduce spacing to fit on one page */
+
             .header {
-                margin-bottom: 8px;
-                line-height: 1.4;
+                margin-bottom: 6px;
+                line-height: 1.3;
             }
-            
+
+            .print-logo {
+                width: 70px;
+            }
+
             .header h3 {
-                font-size: 13px;
-                margin: 2px 0;
+                font-size: 11px;
+                margin: 1px 0;
             }
-            
+
             .header h2 {
-                font-size: 15px;
-                margin: 4px 0;
+                font-size: 13px;
+                margin: 3px 0;
             }
-            
+
             .info-section {
-                margin: 8px 0;
-                padding: 4px;
-                font-size: 12px;
-            }
-            
-            table {
-                margin: 8px 0;
-                font-size: 10px;
-            }
-            
-            th, td {
-                padding: 3px 2px;
-                font-size: 10px;
-            }
-            
-            .signature-section {
-                margin-top: 12px;
-                padding: 8px;
+                margin: 6px 0;
+                padding: 3px 6px;
                 font-size: 11px;
             }
-            
-            .signature-section h4 {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-            
-            .signature-section div {
+
+            table {
                 margin: 5px 0;
+                font-size: 9px;
+            }
+
+            th, td {
+                padding: 2px 1px;
+                font-size: 9px;
+            }
+
+            .total-section {
+                margin: 5px 0;
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+
+            .signature-section {
+                margin-top: 6px;
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+
+            .signature-section h4 {
+                font-size: 10px;
+                margin-bottom: 4px;
+            }
+
+            .signature-section div {
+                margin: 3px 0;
+            }
+
+            .signature-line {
+                min-width: 150px;
             }
         }
-        
+
         .print-btn {
-            background: #1f4bd8;
+            background: #1b2d6b;
             color: white;
             padding: 12px 24px;
             border: none;
@@ -209,13 +227,13 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             cursor: pointer;
             margin: 10px 5px;
         }
-        
+
         .print-btn:hover {
-            background: #163fb8;
+            background: #142354;
         }
-        
+
         .close-btn {
-            background: #0b2d84;
+            background: #7b4dba;
             color: white;
             padding: 12px 24px;
             border: none;
@@ -223,6 +241,10 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
             font-size: 16px;
             cursor: pointer;
             margin: 10px 5px;
+        }
+
+        .close-btn:hover {
+            background: #6a3fa5;
         }
     </style>
 </head>
@@ -240,11 +262,11 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         <h3>الإدارة العامة للتعليم بالهيئة الملكية بينبع</h3>
         <h3>وكالة الكليات لشؤون الطلاب</h3>
         <h3>خدمات الطلاب</h3>
-        
+
         <h2>كشف الحضور والانصراف لطلاب التشغيل</h2>
         <h3>بقسم: مصادر التعلم</h3>
         <h3>
-            لشهر (<?php echo htmlspecialchars($month_name); ?>) 
+            لشهر (<?php echo htmlspecialchars($month_name); ?>)
             لعام <?php echo $year_g; ?>م
             <?php if (!empty($year_h)) echo " ($year_h)"; ?>
         </h3>
@@ -286,35 +308,30 @@ $days_ar = ["الأحد", "الاثنين", "الثلاثاء", "الأربعا�
         </tbody>
     </table>
 
-    <div style="margin: 15px 0; padding: 8px; background: #fff3cd; border-radius: 5px;">
-        <strong>مجموع الساعات الإجمالي:</strong> 
+    <div class="total-section">
+        <strong>مجموع الساعات الإجمالي:</strong>
         <span class="signature-line" style="min-width: 150px;"></span>
     </div>
 
     <div class="signature-section">
-        <h4 style="margin-bottom: 10px; font-size: 14px;">مشرف التشغيل في مكتبة كلية ينبع الصناعية</h4>
-        
-        <div style="margin: 8px 0;">
+        <h4>مشرف التشغيل في مكتبة كلية ينبع الصناعية</h4>
+
+        <div>
             <strong>الاسم:</strong> <span class="signature-line"></span>
         </div>
-        
-        <div style="margin: 8px 0;">
+
+        <div>
             <strong>التوقيع:</strong> <span class="signature-line"></span>
         </div>
-        
-        <div style="margin: 8px 0;">
-            <strong>التاريخ:</strong> 
-            <span class="signature-line" style="min-width: 60px;"></span> / 
-            <span class="signature-line" style="min-width: 60px;"></span> / 
+
+        <div>
+            <strong>التاريخ:</strong>
+            <span class="signature-line" style="min-width: 60px;"></span> /
+            <span class="signature-line" style="min-width: 60px;"></span> /
             <?php echo $year_g; ?>
         </div>
     </div>
 </div>
-
-<script>
-// Auto-print when page loads (optional - remove if not desired)
-// window.onload = function() { window.print(); }
-</script>
 
 </body>
 </html>
