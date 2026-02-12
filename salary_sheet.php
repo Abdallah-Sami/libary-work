@@ -11,7 +11,7 @@ $students = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 ORDE
 
     <form action="salary_export_improved.php" method="POST" class="form-container" dir="rtl">
         
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1f4bd8;">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">
             📋 معلومات الكشف
         </h3>
 
@@ -52,14 +52,14 @@ $students = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 ORDE
 
         <hr style="margin: 30px 0;">
 
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1f4bd8;">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">
             👥 اختيار الطلاب وعدد الساعات
         </h3>
 
-        <div style="background: #f3f7ff; padding: 20px; border-radius: 10px;">
+        <div style="background: #f4f6fb; padding: 20px; border-radius: 10px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background: #1f4bd8; color: white;">
+                    <tr style="background: #1b2d6b; color: white;">
                         <th style="padding: 10px; width: 50px;">✓</th>
                         <th style="padding: 10px;">الاسم</th>
                         <th style="padding: 10px; width: 120px;">الرقم الأكاديمي</th>
@@ -93,7 +93,7 @@ $students = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 ORDE
                     <?php endwhile; ?>
                 </tbody>
                 <tfoot>
-                    <tr style="background: #1f4bd8; color: white; font-weight: bold;">
+                    <tr style="background: #1b2d6b; color: white; font-weight: bold;">
                         <td colspan="5" style="padding: 15px; text-align: right;">المجموع الكلي:</td>
                         <td style="padding: 15px; text-align: center;" id="total_amount">0</td>
                     </tr>

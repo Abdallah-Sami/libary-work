@@ -30,8 +30,8 @@ $students = $conn->query("SELECT id, full_name, academic_id FROM student_workers
             </select>
         </div>
 
-        <div style="padding: 15px; background: #f3f7ff; border-radius: 8px; margin: 20px 0;">
-            <h4 style="margin-bottom: 15px; color: #1f4bd8;">📋 بيانات الطالب المختار:</h4>
+        <div style="padding: 15px; background: #f4f6fb; border-radius: 8px; margin: 20px 0;">
+            <h4 style="margin-bottom: 15px; color: #1b2d6b;">📋 بيانات الطالب المختار:</h4>
             
             <div class="form-group">
                 <label for="student_name">👤 اسم الطالب:</label>
