@@ -53,14 +53,6 @@ requireAuth();
             flex: 1;
         }
 
-        .header-left {
-            text-align: left;
-        }
-
-        .header-left img {
-            height: 65px;
-        }
-
         .inst-name {
             font-size: 14pt;
             font-weight: bold;
@@ -120,7 +112,7 @@ requireAuth();
         .col-num { width: 25px; }
 
         /* Student name column */
-        .col-name { width: 160px; font-size: 9pt; }
+        .col-name { width: 160px; font-size: 9pt; text-align: right; padding-right: 6px !important; }
 
         /* Absence column */
         .col-absence { width: 65px; font-size: 8pt; }
@@ -150,20 +142,28 @@ requireAuth();
 
         /* ===== SIGNATURE SECTION ===== */
         .signature-section {
-            margin-top: 18px;
+            margin-top: 25px;
             display: flex;
-            justify-content: space-around;
-            font-size: 10pt;
+            justify-content: space-between;
+            font-size: 11pt;
             color: #333;
+            padding: 0 40px;
         }
 
         .sig-box {
             text-align: center;
-            width: 25%;
+            width: 40%;
         }
 
-        .sig-box .sig-label {
+        .sig-box .sig-title {
             font-weight: bold;
+            font-size: 12pt;
+            margin-bottom: 5px;
+        }
+
+        .sig-box .sig-name {
+            font-weight: bold;
+            font-size: 11pt;
             margin-bottom: 30px;
         }
 
@@ -172,6 +172,7 @@ requireAuth();
             padding-top: 4px;
             font-size: 9pt;
             color: #666;
+            margin-top: 40px;
         }
 
         /* ===== PRINT CONTROLS ===== */
@@ -195,6 +196,7 @@ requireAuth();
         }
 
         .btn-print { background: #2ebd70; color: #fff; }
+        .btn-word { background: #2b579a; color: #fff; }
         .btn-close { background: #aaa; color: #fff; }
 
         @media print {
@@ -221,6 +223,7 @@ requireAuth();
 <!-- Print Controls -->
 <div class="print-controls">
     <button class="btn-print" onclick="window.print()">🖨️ طباعة</button>
+    <button class="btn-word" onclick="exportToWord()">📄 تصدير Word</button>
     <button class="btn-close" onclick="window.close()">✖ إغلاق</button>
 </div>
 
@@ -235,9 +238,6 @@ requireAuth();
             <div class="inst-name">الهيئة الملكية للجبيل وينبع</div>
             <div class="inst-name" style="font-size: 12pt;">الهيئة الملكية بينبع</div>
             <div class="dept-name">إدارة تطوير الموارد البشرية</div>
-        </div>
-        <div class="header-left">
-            <img src="college.png" alt="Logo">
         </div>
     </div>
 
@@ -256,16 +256,14 @@ requireAuth();
     <!-- Signatures -->
     <div class="signature-section" id="signatureSection" style="display: none;">
         <div class="sig-box">
-            <div class="sig-label">المشرف على التدريب</div>
-            <div class="sig-line">التوقيع / الاسم</div>
+            <div class="sig-title">مشرف التدريب</div>
+            <div class="sig-name">نواف العتيبي</div>
+            <div class="sig-line">التوقيع</div>
         </div>
         <div class="sig-box">
-            <div class="sig-label">مدير إدارة الموارد البشرية</div>
-            <div class="sig-line">التوقيع / الاسم</div>
-        </div>
-        <div class="sig-box">
-            <div class="sig-label">المدير المالي</div>
-            <div class="sig-line">التوقيع / الاسم</div>
+            <div class="sig-title">مدير الإدارة</div>
+            <div class="sig-name">د/ سوزان الدوبي</div>
+            <div class="sig-line">التوقيع</div>
         </div>
     </div>
 
@@ -276,6 +274,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var studentsJSON = sessionStorage.getItem('reward_students');
     var periodFrom   = sessionStorage.getItem('reward_period_from');
     var periodTo     = sessionStorage.getItem('reward_period_to');
+    var periodFrom2  = sessionStorage.getItem('reward_period_from2') || '';
+    var periodTo2    = sessionStorage.getItem('reward_period_to2') || '';
 
     if (!studentsJSON || !periodFrom || !periodTo) {
         document.getElementById('noDataMsg').textContent = '❌ لا توجد بيانات. ارجع لصفحة النموذج واختر الطلاب.';
@@ -288,6 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Check if we have a second period
+    var hasPeriod2 = (periodFrom2 !== '' && periodTo2 !== '');
+    var periodColspan = hasPeriod2 ? 4 : 2;
+
     // Build IBAN header (24 cells)
     var ibanHeaderCells = '';
     for (var i = 0; i < 24; i++) {
@@ -296,20 +300,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var html = '<table class="reward-table">';
     html += '<thead>';
-    // Top header row with merged IBAN
+    // Top header row
     html += '<tr>';
-    html += '<th class="iban-header" colspan="24">رقم الحساب (أيبان)</th>';
-    html += '<th class="col-bank" rowspan="2">اسم البنك</th>';
-    html += '<th class="col-period" colspan="2">الفترة المحتسبة للمكافأة<br>يوم / شهر</th>';
-    html += '<th class="col-absence" rowspan="2">عدد أيام الغياب<br>(إن وجد)</th>';
-    html += '<th class="col-name" rowspan="2">اسم المتدرب</th>';
     html += '<th class="col-num" rowspan="2">م</th>';
+    html += '<th class="col-name" rowspan="2">اسم المتدرب</th>';
+    html += '<th class="col-absence" rowspan="2">عدد أيام الغياب<br>(إن وجد)</th>';
+
+    if (hasPeriod2) {
+        html += '<th class="col-period" colspan="2">الفترة الأولى</th>';
+        html += '<th class="col-period" colspan="2">الفترة الثانية</th>';
+    } else {
+        html += '<th class="col-period" colspan="2">الفترة المحتسبة للمكافأة<br>يوم / شهر</th>';
+    }
+
+    html += '<th class="col-bank" rowspan="2">اسم البنك</th>';
+    html += '<th class="iban-header" colspan="24">رقم الحساب (أيبان)</th>';
     html += '</tr>';
-    // Sub-header row for IBAN individual cells + period sub-headers
+
+    // Sub-header row
     html += '<tr>';
-    html += ibanHeaderCells;
-    html += '<th class="col-period">إلى</th>';
+
     html += '<th class="col-period">من</th>';
+    html += '<th class="col-period">إلى</th>';
+
+    if (hasPeriod2) {
+        html += '<th class="col-period">من</th>';
+        html += '<th class="col-period">إلى</th>';
+    }
+
+    html += ibanHeaderCells;
     html += '</tr>';
     html += '</thead>';
     html += '<tbody>';
@@ -317,33 +336,36 @@ document.addEventListener('DOMContentLoaded', function() {
     students.forEach(function(s, idx) {
         html += '<tr>';
 
+        // Serial
+        html += '<td class="col-num">' + (idx + 1) + '</td>';
+
+        // Name (right-aligned)
+        html += '<td class="col-name">' + s.name + '</td>';
+
+        // Absence
+        html += '<td class="col-absence">' + (s.absence || 'لا يوجد') + '</td>';
+
+        // Period 1
+        html += '<td class="col-period">' + periodFrom + '</td>';
+        html += '<td class="col-period">' + periodTo + '</td>';
+
+        // Period 2 (if exists)
+        if (hasPeriod2) {
+            html += '<td class="col-period">' + periodFrom2 + '</td>';
+            html += '<td class="col-period">' + periodTo2 + '</td>';
+        }
+
+        // Bank
+        html += '<td class="col-bank">' + (s.bank || '—') + '</td>';
+
         // IBAN cells (24 characters)
         var iban = (s.iban || '').replace(/\s/g, '');
-        // Pad to 24 characters
         while (iban.length < 24) iban += ' ';
 
         for (var c = 0; c < 24; c++) {
             var ch = iban.charAt(c).trim();
             html += '<td class="iban-cell">' + ch + '</td>';
         }
-
-        // Bank
-        html += '<td class="col-bank">' + (s.bank || '—') + '</td>';
-
-        // Period To
-        html += '<td class="col-period">' + periodTo + '</td>';
-
-        // Period From
-        html += '<td class="col-period">' + periodFrom + '</td>';
-
-        // Absence
-        html += '<td class="col-absence">' + (s.absence || 'لا يوجد') + '</td>';
-
-        // Name
-        html += '<td class="col-name">' + s.name + '</td>';
-
-        // Serial
-        html += '<td class="col-num">' + (idx + 1) + '</td>';
 
         html += '</tr>';
     });
@@ -353,6 +375,23 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('tableContainer').innerHTML = html;
     document.getElementById('signatureSection').style.display = 'flex';
 });
+
+function exportToWord() {
+    var content = document.querySelector('.page-wrapper').innerHTML;
+    var styles = document.querySelector('style').innerHTML;
+
+    var htmlContent = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><style>' + styles + '</style></head><body style="font-family: Times New Roman, Arial, serif; direction: rtl;">' + content + '</body></html>';
+
+    var blob = new Blob(['\ufeff' + htmlContent], { type: 'application/msword' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'كشف_مكافأة_التدريب_التعاوني.doc';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 </script>
 
 </body>

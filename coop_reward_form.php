@@ -28,17 +28,33 @@ $students = $conn->query("SELECT * FROM coop_students ORDER BY full_name ASC");
         <h3 style="text-align: center; margin-bottom: 20px;">📝 اختر الطلاب وحدد فترة المكافأة</h3>
 
         <form id="rewardForm" onsubmit="return openRewardPrint()">
-            <!-- Period -->
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+            <!-- Period 1 -->
+            <h4 style="margin-bottom: 10px; color: #1b2d6b;">📅 الفترة الأولى (مطلوبة)</h4>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 15px;">
                 <div class="form-group" style="flex: 1; min-width: 200px;">
-                    <label for="period_from">📅 فترة المكافأة — من (يوم/شهر)</label>
+                    <label for="period_from">من (يوم/شهر)</label>
                     <input type="text" id="period_from" name="period_from" class="form-control"
                            placeholder="مثال: 1/11" required>
                 </div>
                 <div class="form-group" style="flex: 1; min-width: 200px;">
-                    <label for="period_to">📅 فترة المكافأة — إلى (يوم/شهر)</label>
+                    <label for="period_to">إلى (يوم/شهر)</label>
                     <input type="text" id="period_to" name="period_to" class="form-control"
                            placeholder="مثال: 30/11" required>
+                </div>
+            </div>
+
+            <!-- Period 2 -->
+            <h4 style="margin-bottom: 10px; color: #1b2d6b;">📅 الفترة الثانية (اختياري)</h4>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="period_from2">من (يوم/شهر)</label>
+                    <input type="text" id="period_from2" name="period_from2" class="form-control"
+                           placeholder="مثال: 1/12">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                    <label for="period_to2">إلى (يوم/شهر)</label>
+                    <input type="text" id="period_to2" name="period_to2" class="form-control"
+                           placeholder="مثال: 31/12">
                 </div>
             </div>
 
@@ -140,10 +156,16 @@ function openRewardPrint() {
         });
     });
 
+    // Get second period (optional)
+    var periodFrom2 = document.getElementById('period_from2').value;
+    var periodTo2   = document.getElementById('period_to2').value;
+
     // Store in sessionStorage and open print page
     sessionStorage.setItem('reward_students', JSON.stringify(studentsData));
     sessionStorage.setItem('reward_period_from', periodFrom);
     sessionStorage.setItem('reward_period_to', periodTo);
+    sessionStorage.setItem('reward_period_from2', periodFrom2);
+    sessionStorage.setItem('reward_period_to2', periodTo2);
 
     window.open('coop_reward_print.php', '_blank');
     return false;
