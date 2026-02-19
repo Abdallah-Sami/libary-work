@@ -1,5 +1,12 @@
 <?php
 include 'db_connect.php';
+
+// Auto-add daily_hours column if not exists
+$check = $conn->query("SHOW COLUMNS FROM student_workers LIKE 'daily_hours'");
+if ($check && $check->num_rows == 0) {
+    $conn->query("ALTER TABLE student_workers ADD COLUMN daily_hours INT DEFAULT 2 AFTER hourly_rate");
+}
+
 include 'header.php';
 
 // Handle Add/Edit Student
@@ -13,26 +20,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $iban = $conn->real_escape_string($_POST['iban']);
     $bank_name = $conn->real_escape_string($_POST['bank_name']);
     $hourly_rate = floatval($_POST['hourly_rate']);
-    
+    $daily_hours = intval($_POST['daily_hours'] ?? 2);
+
     if (isset($_POST['student_id']) && !empty($_POST['student_id'])) {
         // Update existing student
         $student_id = intval($_POST['student_id']);
-        $sql = "UPDATE student_workers SET 
-                full_name='$full_name', 
-                academic_id='$academic_id', 
-                department='$department', 
-                major='$major', 
-                phone='$phone', 
+        $sql = "UPDATE student_workers SET
+                full_name='$full_name',
+                academic_id='$academic_id',
+                department='$department',
+                major='$major',
+                phone='$phone',
                 email='$email',
                 iban='$iban',
                 bank_name='$bank_name',
-                hourly_rate='$hourly_rate'
+                hourly_rate='$hourly_rate',
+                daily_hours='$daily_hours'
                 WHERE id=$student_id";
         $message = "تم تحديث بيانات الطالب بنجاح!";
     } else {
         // Add new student
-        $sql = "INSERT INTO student_workers (full_name, academic_id, department, major, phone, email, iban, bank_name, hourly_rate) 
-                VALUES ('$full_name', '$academic_id', '$department', '$major', '$phone', '$email', '$iban', '$bank_name', '$hourly_rate')";
+        $sql = "INSERT INTO student_workers (full_name, academic_id, department, major, phone, email, iban, bank_name, hourly_rate, daily_hours)
+                VALUES ('$full_name', '$academic_id', '$department', '$major', '$phone', '$email', '$iban', '$bank_name', '$hourly_rate', '$daily_hours')";
         $message = "تم إضافة الطالب بنجاح!";
     }
     
@@ -152,9 +161,17 @@ $total_students = $students->num_rows;
 
             <div class="form-group">
                 <label for="hourly_rate">💰 أجر الساعة (ريال)</label>
-                <input type="number" step="0.01" id="hourly_rate" name="hourly_rate" class="form-control" 
-                       value="<?= $edit_student['hourly_rate'] ?? '20.00' ?>" 
+                <input type="number" step="0.01" id="hourly_rate" name="hourly_rate" class="form-control"
+                       value="<?= $edit_student['hourly_rate'] ?? '20.00' ?>"
                        placeholder="20.00">
+            </div>
+
+            <div class="form-group">
+                <label for="daily_hours">⏰ ساعات العمل اليومية</label>
+                <select id="daily_hours" name="daily_hours" class="form-control">
+                    <option value="2" <?= (isset($edit_student['daily_hours']) && $edit_student['daily_hours'] == 2) ? 'selected' : '' ?>>ساعتين (2)</option>
+                    <option value="3" <?= (isset($edit_student['daily_hours']) && $edit_student['daily_hours'] == 3) ? 'selected' : '' ?>>ثلاث ساعات (3)</option>
+                </select>
             </div>
 
             <div class="action-buttons">
@@ -180,6 +197,7 @@ $total_students = $students->num_rows;
                     <th>الرقم الأكاديمي</th>
                     <th>القسم</th>
                     <th>التخصص</th>
+                    <th>الساعات</th>
                     <th>الجوال</th>
                     <th class="no-print">الإجراءات</th>
                 </tr>
@@ -194,6 +212,7 @@ $total_students = $students->num_rows;
                             <td><?= htmlspecialchars($student['academic_id']) ?></td>
                             <td><?= htmlspecialchars($student['department']) ?></td>
                             <td><?= htmlspecialchars($student['major']) ?></td>
+                            <td><?= ($student['daily_hours'] ?? 2) ?> ساعات</td>
                             <td><?= htmlspecialchars($student['phone']) ?></td>
                             <td class="no-print">
                                 <a href="?edit=<?= $student['id'] ?>" class="btn btn-warning" style="padding: 6px 12px; margin: 2px;">
@@ -208,7 +227,7 @@ $total_students = $students->num_rows;
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 30px;">
+                        <td colspan="8" style="text-align: center; padding: 30px;">
                             📚 لا يوجد طلاب مسجلين حالياً. ابدأ بإضافة طالب جديد!
                         </td>
                     </tr>
