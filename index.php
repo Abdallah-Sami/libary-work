@@ -40,6 +40,12 @@
             <p>إضافة وإدارة طلاب التدريب التعاوني</p>
         </a>
 
+        <a href="coop_reward_form.php" class="home-card">
+            <div style="font-size: 48px;">📄</div>
+            <h3>نموذج صرف المكافأة</h3>
+            <p>نموذج صرف مكافأة طلاب التدريب التعاوني</p>
+        </a>
+
         <a href="salary_sheet.php" class="home-card">
             <div style="font-size: 48px;">💰</div>
             <h3>كشف الرواتب</h3>

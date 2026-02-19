@@ -1,5 +1,20 @@
 <?php
 include 'db_connect.php';
+
+// Auto-create table if not exists
+$conn->query("CREATE TABLE IF NOT EXISTS coop_students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    academic_id VARCHAR(100) NOT NULL,
+    department VARCHAR(255),
+    major VARCHAR(255),
+    phone VARCHAR(20),
+    email VARCHAR(255),
+    iban VARCHAR(100),
+    bank_name VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)");
+
 include 'header.php';
 
 // Handle Add/Edit Student
@@ -183,9 +198,6 @@ $total_students = $students->num_rows;
                             <td class="no-print">
                                 <a href="?edit=<?= $student['id'] ?>" class="btn btn-warning" style="padding:6px 12px; margin:2px;">
                                     ✏️ تعديل
-                                </a>
-                                <a href="coop_card_print.php?id=<?= $student['id'] ?>" target="_blank" class="btn btn-primary" style="padding:6px 12px; margin:2px;">
-                                    🖨️ طباعة البطاقة
                                 </a>
                                 <a href="?delete=<?= $student['id'] ?>" class="btn btn-danger" style="padding:6px 12px; margin:2px;"
                                    onclick="return confirm('هل أنت متأكد من حذف هذا الطالب؟')">
