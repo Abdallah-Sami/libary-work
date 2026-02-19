@@ -33,6 +33,7 @@ $username = getUser();
             <a href="print_spine.php" class="nav-btn">📖 Spines</a>
             <a href="manage_students.php" class="nav-btn">👥 تشغيل</a>
             <a href="manage_coop_students.php" class="nav-btn">🎓 تدريب تعاوني</a>
+            <a href="coop_reward_form.php" class="nav-btn">📄 مكافأة التدريب</a>
             <a href="salary_sheet.php" class="nav-btn">💰 Salary</a>
             <a href="attendance_form.php" class="nav-btn">📝 Attendance</a>
             <a href="logout.php" class="nav-btn" style="background: rgba(220, 53, 69, 0.8);" 
