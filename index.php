@@ -30,8 +30,14 @@
 
         <a href="manage_students.php" class="home-card">
             <div style="font-size: 48px;">👥</div>
-            <h3>إدارة الطلاب</h3>
-            <p>إضافة وإدارة الطلاب العاملين</p>
+            <h3>طلاب التشغيل</h3>
+            <p>إضافة وإدارة طلاب التشغيل</p>
+        </a>
+
+        <a href="manage_coop_students.php" class="home-card">
+            <div style="font-size: 48px;">🎓</div>
+            <h3>طلاب التدريب التعاوني</h3>
+            <p>إضافة وإدارة طلاب التدريب التعاوني</p>
         </a>
 
         <a href="salary_sheet.php" class="home-card">
