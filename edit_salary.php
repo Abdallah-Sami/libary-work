@@ -9,62 +9,73 @@ if ($check && $check->num_rows == 0) {
 
 include 'header.php';
 
+$sheet_id = intval($_GET['id'] ?? 0);
+if ($sheet_id <= 0) {
+    die("<script>alert('كشف غير صالح!'); window.location='saved_sheets.php';</script>");
+}
+
+// Get sheet data
+$sheet_result = $conn->query("SELECT * FROM salary_sheets WHERE id = $sheet_id");
+if (!$sheet_result || $sheet_result->num_rows == 0) {
+    die("<script>alert('الكشف غير موجود!'); window.location='saved_sheets.php';</script>");
+}
+$sheet = $sheet_result->fetch_assoc();
+
+// Get saved items to pre-fill hours
+$saved_items = [];
+$items_result = $conn->query("SELECT * FROM salary_sheet_items WHERE sheet_id = $sheet_id");
+if ($items_result) {
+    while ($item = $items_result->fetch_assoc()) {
+        $saved_items[$item['student_id']] = $item;
+    }
+}
+
 // Get students separated by daily hours
 $students_2h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 AND (daily_hours = 2 OR daily_hours IS NULL) ORDER BY full_name ASC");
 $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 AND daily_hours = 3 ORDER BY full_name ASC");
 ?>
 
 <div class="content">
-    <h2 class="page-title" dir="rtl">💰 كشف حساب التشغيل الطلابي</h2>
+    <h2 class="page-title" dir="rtl">✏️ تعديل كشف محفوظ</h2>
 
-    <form id="salaryForm" action="salary_export_improved.php" method="POST" class="form-container" dir="rtl">
+    <form action="save_salary.php" method="POST" class="form-container" dir="rtl">
+        <input type="hidden" name="edit_sheet_id" value="<?= $sheet_id ?>">
 
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">
-            📋 معلومات الكشف
-        </h3>
+        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">📋 معلومات الكشف</h3>
 
         <div class="form-group">
             <label>📅 الفترة من:</label>
-            <input type="date" name="period_from" class="form-control" required>
+            <input type="date" name="period_from" class="form-control" value="<?= $sheet['period_from'] ?>" required>
         </div>
-
         <div class="form-group">
             <label>📅 الفترة إلى:</label>
-            <input type="date" name="period_to" class="form-control" required>
+            <input type="date" name="period_to" class="form-control" value="<?= $sheet['period_to'] ?>" required>
         </div>
-
         <div class="form-group">
             <label>📍 مكان التشغيل:</label>
-            <input type="text" name="work_place" class="form-control" value="قسم مصادر التعلم / المكتبات" required>
+            <input type="text" name="work_place" class="form-control" value="<?= htmlspecialchars($sheet['work_place']) ?>" required>
         </div>
-
         <div class="form-group">
             <label>👤 المشرف المباشر:</label>
-            <input type="text" name="supervisor_name" class="form-control" placeholder="مثال: عيد جميعان الرفاعي" required>
+            <input type="text" name="supervisor_name" class="form-control" value="<?= htmlspecialchars($sheet['supervisor_name']) ?>" required>
         </div>
-
         <div class="form-group">
             <label>📱 جوال المشرف:</label>
-            <input type="text" name="supervisor_phone" class="form-control" placeholder="مثال: 0501234567" required>
+            <input type="text" name="supervisor_phone" class="form-control" value="<?= htmlspecialchars($sheet['supervisor_phone']) ?>" required>
         </div>
-
         <div class="form-group">
             <label>🏢 المسؤول عن التوقيع:</label>
-            <input type="text" name="signature_name" class="form-control" placeholder="مثال: حاتم بن حامد الحربي">
+            <input type="text" name="signature_name" class="form-control" value="<?= htmlspecialchars($sheet['signature_name']) ?>">
         </div>
-
         <div class="form-group">
             <label>📋 مسمى المسؤول:</label>
-            <input type="text" name="signature_title" class="form-control" placeholder="مثال: مشرف الأنشطة الطلابية">
+            <input type="text" name="signature_title" class="form-control" value="<?= htmlspecialchars($sheet['signature_title']) ?>">
         </div>
 
         <hr style="margin: 30px 0;">
 
-        <!-- ===== طلاب الساعتين ===== -->
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">
-            👥 طلاب الساعتين (2 ساعات يومياً)
-        </h3>
-
+        <!-- طلاب الساعتين -->
+        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">👥 طلاب الساعتين (2 ساعات يومياً)</h3>
         <div style="background: #f4f6fb; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
@@ -79,11 +90,16 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
                 </thead>
                 <tbody>
                     <?php if ($students_2h && $students_2h->num_rows > 0): ?>
-                        <?php while($student = $students_2h->fetch_assoc()): ?>
+                        <?php while($student = $students_2h->fetch_assoc()):
+                            $is_saved = isset($saved_items[$student['id']]);
+                            $saved_hours = $is_saved ? $saved_items[$student['id']]['hours'] : '';
+                            $saved_amount = $is_saved ? $saved_items[$student['id']]['amount'] : 0;
+                        ?>
                             <tr style="border-bottom: 1px solid #ddd;">
                                 <td style="padding: 10px; text-align: center;">
                                     <input type="checkbox" name="students[]" value="<?= $student['id'] ?>"
-                                           class="student-checkbox" onchange="updateTotal()">
+                                           class="student-checkbox" onchange="updateTotal()"
+                                           <?= $is_saved ? 'checked' : '' ?>>
                                     <input type="hidden" name="daily_hours_<?= $student['id'] ?>" value="2">
                                 </td>
                                 <td style="padding: 10px;"><?= htmlspecialchars($student['full_name']) ?></td>
@@ -93,17 +109,16 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
                                            class="form-control hours-input" data-student="<?= $student['id'] ?>"
                                            data-rate="<?= $student['hourly_rate'] ?>"
                                            min="0" step="0.5" placeholder="0"
+                                           value="<?= $saved_hours ?>"
                                            style="padding: 5px; width: 100%;"
                                            onchange="calculateAmount(this)">
                                 </td>
-                                <td style="padding: 10px; text-align: center;" class="rate-cell"><?= $student['hourly_rate'] ?></td>
-                                <td style="padding: 10px; text-align: center;" class="amount-cell" id="amount_<?= $student['id'] ?>">0</td>
+                                <td style="padding: 10px; text-align: center;"><?= $student['hourly_rate'] ?></td>
+                                <td style="padding: 10px; text-align: center;" id="amount_<?= $student['id'] ?>"><?= number_format($saved_amount, 2) ?></td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 20px; color: #888;">لا يوجد طلاب في فئة الساعتين</td>
-                        </tr>
+                        <tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">لا يوجد طلاب في فئة الساعتين</td></tr>
                     <?php endif; ?>
                 </tbody>
                 <tfoot>
@@ -115,11 +130,8 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
             </table>
         </div>
 
-        <!-- ===== طلاب ثلاث ساعات ===== -->
-        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">
-            👥 طلاب ثلاث ساعات (3 ساعات يومياً)
-        </h3>
-
+        <!-- طلاب ثلاث ساعات -->
+        <h3 style="text-align: center; margin-bottom: 20px; color: #1b2d6b;">👥 طلاب ثلاث ساعات (3 ساعات يومياً)</h3>
         <div style="background: #f4f6fb; padding: 20px; border-radius: 10px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
@@ -134,11 +146,16 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
                 </thead>
                 <tbody>
                     <?php if ($students_3h && $students_3h->num_rows > 0): ?>
-                        <?php while($student = $students_3h->fetch_assoc()): ?>
+                        <?php while($student = $students_3h->fetch_assoc()):
+                            $is_saved = isset($saved_items[$student['id']]);
+                            $saved_hours = $is_saved ? $saved_items[$student['id']]['hours'] : '';
+                            $saved_amount = $is_saved ? $saved_items[$student['id']]['amount'] : 0;
+                        ?>
                             <tr style="border-bottom: 1px solid #ddd;">
                                 <td style="padding: 10px; text-align: center;">
                                     <input type="checkbox" name="students[]" value="<?= $student['id'] ?>"
-                                           class="student-checkbox" onchange="updateTotal()">
+                                           class="student-checkbox" onchange="updateTotal()"
+                                           <?= $is_saved ? 'checked' : '' ?>>
                                     <input type="hidden" name="daily_hours_<?= $student['id'] ?>" value="3">
                                 </td>
                                 <td style="padding: 10px;"><?= htmlspecialchars($student['full_name']) ?></td>
@@ -148,17 +165,16 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
                                            class="form-control hours-input" data-student="<?= $student['id'] ?>"
                                            data-rate="<?= $student['hourly_rate'] ?>"
                                            min="0" step="0.5" placeholder="0"
+                                           value="<?= $saved_hours ?>"
                                            style="padding: 5px; width: 100%;"
                                            onchange="calculateAmount(this)">
                                 </td>
-                                <td style="padding: 10px; text-align: center;" class="rate-cell"><?= $student['hourly_rate'] ?></td>
-                                <td style="padding: 10px; text-align: center;" class="amount-cell" id="amount_<?= $student['id'] ?>">0</td>
+                                <td style="padding: 10px; text-align: center;"><?= $student['hourly_rate'] ?></td>
+                                <td style="padding: 10px; text-align: center;" id="amount_<?= $student['id'] ?>"><?= number_format($saved_amount, 2) ?></td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 20px; color: #888;">لا يوجد طلاب في فئة ثلاث ساعات</td>
-                        </tr>
+                        <tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">لا يوجد طلاب في فئة ثلاث ساعات</td></tr>
                     <?php endif; ?>
                 </tbody>
                 <tfoot>
@@ -170,23 +186,15 @@ $students_3h = $conn->query("SELECT * FROM student_workers WHERE is_active = 1 A
             </table>
         </div>
 
-        <!-- المجموع الكلي -->
         <div style="background: #1b2d6b; color: white; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold;">
             المجموع الكلي: <span id="total_amount">0</span> ريال
         </div>
 
         <div class="action-buttons" style="margin-top: 30px;">
-            <button type="submit" name="export_type" value="excel" class="btn btn-success">
-                📊 تصدير Excel
+            <button type="submit" class="btn btn-primary" style="padding: 12px 40px; font-size: 16px;">
+                💾 حفظ التعديلات
             </button>
-            <button type="submit" name="export_type" value="pdf" class="btn btn-danger">
-                📄 تصدير PDF
-            </button>
-            <button type="button" onclick="saveSheet()" class="btn btn-primary" style="background: #2b579a;">
-                💾 حفظ الكشف
-            </button>
-            <a href="saved_sheets.php" class="btn btn-warning">📂 الكشوف المحفوظة</a>
-            <a href="index.php" class="btn btn-secondary">⬅ العودة</a>
+            <a href="saved_sheets.php" class="btn btn-secondary">⬅ إلغاء</a>
         </div>
     </form>
 </div>
@@ -197,51 +205,26 @@ function calculateAmount(input) {
     const hours = parseFloat(input.value) || 0;
     const rate = parseFloat(input.dataset.rate) || 0;
     const amount = hours * rate;
-
     document.getElementById('amount_' + studentId).textContent = amount.toFixed(2);
     updateTotal();
 }
 
 function updateTotal() {
-    let total2h = 0;
-    let total3h = 0;
-
-    const checkboxes = document.querySelectorAll('.student-checkbox:checked');
-
-    checkboxes.forEach(function(checkbox) {
-        const studentId = checkbox.value;
-        const amountText = document.getElementById('amount_' + studentId).textContent;
-        const amount = parseFloat(amountText) || 0;
-        const dailyHours = checkbox.closest('td').querySelector('input[type="hidden"]').value;
-
-        if (dailyHours === '2') {
-            total2h += amount;
-        } else {
-            total3h += amount;
-        }
+    let total2h = 0, total3h = 0;
+    document.querySelectorAll('.student-checkbox:checked').forEach(function(cb) {
+        const studentId = cb.value;
+        const amount = parseFloat(document.getElementById('amount_' + studentId).textContent) || 0;
+        const dh = cb.closest('td').querySelector('input[type="hidden"]').value;
+        if (dh === '2') total2h += amount; else total3h += amount;
     });
-
     document.getElementById('total_2h').textContent = total2h.toFixed(2);
     document.getElementById('total_3h').textContent = total3h.toFixed(2);
     document.getElementById('total_amount').textContent = (total2h + total3h).toFixed(2);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('.hours-input');
-    inputs.forEach(function(input) {
-        input.addEventListener('change', function() {
-            calculateAmount(this);
-        });
-    });
+    updateTotal();
 });
-
-function saveSheet() {
-    var form = document.getElementById('salaryForm');
-    var originalAction = form.action;
-    form.action = 'save_salary.php';
-    form.submit();
-    form.action = originalAction;
-}
 </script>
 
 <?php include 'footer.php'; ?>

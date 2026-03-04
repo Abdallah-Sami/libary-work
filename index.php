@@ -52,6 +52,12 @@
             <p>إنشاء كشوف رواتب الطلاب</p>
         </a>
 
+        <a href="saved_sheets.php" class="home-card">
+            <div style="font-size: 48px;">📂</div>
+            <h3>الكشوف المحفوظة</h3>
+            <p>عرض وطباعة وتعديل الكشوف السابقة</p>
+        </a>
+
         <a href="attendance_form.php" class="home-card">
             <div style="font-size: 48px;">📝</div>
             <h3>حضور الطلاب</h3>
