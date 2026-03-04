@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - نظام المكتبة</title>
+    <title>تسجيل الدخول - المكتبة</title>
     <style>
         * {
             margin: 0;
@@ -244,10 +244,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-card">
         <div class="logo">
-            <img src="college.png" alt="شعار الهيئة الملكية">
+       
         </div>
-        <h1>نظام المكتبة</h1>
-        <p class="subtitle">كلية ينبع الصناعية - المكتبة الرئيسية</p>
+        <h1> المكتبة</h1>
+        <p class="subtitle"></p>
 
         <?php if ($error): ?>
             <div class="error">
@@ -298,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit" class="btn-login">تسجيل الدخول</button>
         </form>
 
-        <div class="footer">&copy; <?= date('Y') ?> جميع الحقوق محفوظة</div>
+  
     </div>
 
     <script>

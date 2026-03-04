@@ -49,8 +49,9 @@ requireAuth();
         }
 
         .header-center {
-            text-align: center;
+            text-align: left;
             flex: 1;
+            padding-left:4px;
         }
 
         .inst-name {
@@ -70,6 +71,7 @@ requireAuth();
         .title-section {
             text-align: center;
             margin: 10px 0 8px;
+            padding-bottom:16px;
         }
 
         .title-section h2 {
@@ -107,6 +109,28 @@ requireAuth();
             font-weight: bold;
             font-size: 8.5pt;
         }
+        
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 12pt;
+            color: #1a5276;
+            font-weight: bold;
+        }
+
+        .info-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-row .line {
+            display: inline-block;
+            width: 120px;
+            border-bottom: 1px solid #1a5276;
+        }
 
         /* Serial number column */
         .col-num { width: 25px; }
@@ -123,7 +147,7 @@ requireAuth();
         /* Bank column */
         .col-bank { width: 55px; font-size: 8pt; }
 
-        /* IBAN letter cells */
+        /* IBAN cells */
         .iban-cell {
             width: 16px;
             min-width: 16px;
@@ -247,6 +271,12 @@ requireAuth();
         <h3>نموذج صرف المكافأة الشهرية</h3>
         <h3>لطلاب التدريب التعاوني</h3>
     </div>
+    
+      <div class="info-row">
+        <span>إدارة: <span class="line"></span></span>
+        <span>عن شهر: <span class="line"></span></span>
+        <span>2026</span>
+    </div>
 
     <!-- Table -->
     <div id="tableContainer">
@@ -258,12 +288,12 @@ requireAuth();
         <div class="sig-box">
             <div class="sig-title">مشرف التدريب</div>
             <div class="sig-name">نواف العتيبي</div>
-            <div class="sig-line">التوقيع</div>
+  
         </div>
         <div class="sig-box">
             <div class="sig-title">مدير الإدارة</div>
             <div class="sig-name">د/ سوزان الدوبي</div>
-            <div class="sig-line">التوقيع</div>
+      
         </div>
     </div>
 
@@ -290,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Check if we have a second period
     var hasPeriod2 = (periodFrom2 !== '' && periodTo2 !== '');
-    var periodColspan = hasPeriod2 ? 4 : 2;
 
     // Build IBAN header (24 cells)
     var ibanHeaderCells = '';
@@ -314,12 +343,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     html += '<th class="col-bank" rowspan="2">اسم البنك</th>';
+    
+    // IBAN header - 24 cells in LTR order (right side of table)
     html += '<th class="iban-header" colspan="24">رقم الحساب (أيبان)</th>';
     html += '</tr>';
 
     // Sub-header row
     html += '<tr>';
-
     html += '<th class="col-period">من</th>';
     html += '<th class="col-period">إلى</th>';
 
@@ -328,6 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '<th class="col-period">إلى</th>';
     }
 
+    // IBAN sub-header cells
     html += ibanHeaderCells;
     html += '</tr>';
     html += '</thead>';
@@ -358,13 +389,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Bank
         html += '<td class="col-bank">' + (s.bank || '—') + '</td>';
 
-        // IBAN cells (24 characters)
-        var iban = (s.iban || '').replace(/\s/g, '');
+        // IBAN cells (24 characters) - عكس الترتيب عشان يظهر صح في RTL
+        var iban = (s.iban || '').replace(/\s/g, '').toUpperCase();
         while (iban.length < 24) iban += ' ';
 
+        // عكس الآيبان عشان لما يترتب RTL يظهر صحيح LTR
+        var ibanReversed = iban.split('').reverse().join('');
+        
         for (var c = 0; c < 24; c++) {
-            var ch = iban.charAt(c).trim();
-            html += '<td class="iban-cell">' + ch + '</td>';
+            var ch = ibanReversed.charAt(c);
+            html += '<td class="iban-cell">' + (ch.trim() || '') + '</td>';
         }
 
         html += '</tr>';
