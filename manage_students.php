@@ -1,5 +1,6 @@
 <?php
 include 'db_connect.php';
+require_once 'helpers.php';
 
 // Auto-add daily_hours column if not exists
 $check = $conn->query("SHOW COLUMNS FROM student_workers LIKE 'daily_hours'");
@@ -146,16 +147,7 @@ $total_students = $students->num_rows;
             <div class="form-group">
                 <label for="bank_name">🏛️ اسم البنك</label>
                 <select id="bank_name" name="bank_name" class="form-control">
-                    <option value="">-- اختر البنك --</option>
-                    <option value="الراجحي" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الراجحي') ? 'selected' : '' ?>>الراجحي</option>
-                    <option value="الأهلي" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الأهلي') ? 'selected' : '' ?>>الأهلي</option>
-                    <option value="الرياض" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الرياض') ? 'selected' : '' ?>>الرياض</option>
-                    <option value="الإنماء" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الإنماء') ? 'selected' : '' ?>>الإنماء</option>
-                    <option value="البلاد" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'البلاد') ? 'selected' : '' ?>>البلاد</option>
-                    <option value="سامبا" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'سامبا') ? 'selected' : '' ?>>سامبا</option>
-                    <option value="ساب" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'ساب') ? 'selected' : '' ?>>ساب</option>
-                    <option value="الجزيرة" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الجزيرة') ? 'selected' : '' ?>>الجزيرة</option>
-                    <option value="الفرنسي" <?= (isset($edit_student['bank_name']) && $edit_student['bank_name'] == 'الفرنسي') ? 'selected' : '' ?>>الفرنسي</option>
+                    <?= bankOptions($edit_student['bank_name'] ?? '') ?>
                 </select>
             </div>
 
