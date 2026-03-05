@@ -16,10 +16,10 @@ $username = getUser();
 <div class="container">
     <header class="main-header no-print">
         <div class="brand-wrap">
-            <img src="college.png" alt="شعار الهيئة الملكية" class="site-logo">
+
             <div>
                 <h1>📚 Library</h1>
-                <p class="brand-subtitle">Yanbu Industrial College - Main Library</p>
+            
                 <p class="brand-user">
                     👤 مرحباً: <?= htmlspecialchars($username) ?>
                 </p>
