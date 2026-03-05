@@ -1,19 +1,7 @@
 <?php
 include 'db_connect.php';
-
-// Auto-create tables
-$conn->query("CREATE TABLE IF NOT EXISTS salary_sheets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    period_from DATE NOT NULL,
-    period_to DATE NOT NULL,
-    work_place VARCHAR(255),
-    supervisor_name VARCHAR(255),
-    supervisor_phone VARCHAR(50),
-    signature_name VARCHAR(255),
-    signature_title VARCHAR(255),
-    total_amount DECIMAL(10,2) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)");
+require_once 'helpers.php';
+ensureSalaryTables($conn);
 
 // Handle delete
 if (isset($_GET['delete'])) {

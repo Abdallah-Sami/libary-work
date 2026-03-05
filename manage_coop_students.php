@@ -1,5 +1,6 @@
 <?php
 include 'db_connect.php';
+require_once 'helpers.php';
 
 // Auto-create table if not exists
 $conn->query("CREATE TABLE IF NOT EXISTS coop_students (
@@ -146,14 +147,7 @@ $total_students = $students->num_rows;
             <div class="form-group">
                 <label for="bank_name">🏛️ اسم البنك</label>
                 <select id="bank_name" name="bank_name" class="form-control">
-                    <option value="">-- اختر البنك --</option>
-                    <?php
-                    $banks = ['الراجحي','الأهلي','الرياض','الإنماء','البلاد','سامبا','ساب','الجزيرة','الفرنسي'];
-                    foreach ($banks as $bank):
-                        $sel = (isset($edit_student['bank_name']) && $edit_student['bank_name'] == $bank) ? 'selected' : '';
-                    ?>
-                    <option value="<?= $bank ?>" <?= $sel ?>><?= $bank ?></option>
-                    <?php endforeach; ?>
+                    <?= bankOptions($edit_student['bank_name'] ?? '') ?>
                 </select>
             </div>
 

@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $stmt->close();
 
-    header("Location: view_books.php");   
+    header("Location: view_books.php");
     exit();
 }
 ?>
-<?php include 'header.php'; ?>
