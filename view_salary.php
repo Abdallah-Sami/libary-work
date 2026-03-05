@@ -159,6 +159,6 @@ if ($is_print) {
 
 <?php if ($is_print): ?>
 </body></html>
-<?php } else { ?>
+<?php else: ?>
 </div>
-<?php include 'footer.php'; } ?>
+<?php include 'footer.php'; endif; ?>
